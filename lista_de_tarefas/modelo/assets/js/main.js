@@ -8,13 +8,19 @@ function meu_escopo(){
         ul.appendChild(lista_criada);
         lista_criada.textContent = input.value;
         input.value = "";
+        input.focus();
+
+        lista_criada.innerText += " "
+
         return lista_criada;
     }
 
     function btn_remove(lista_criada){
+        //lista_criada.innerText += " "
         const button_remove = document.createElement("button");
         button_remove.innerText = "Apagar"
         lista_criada.appendChild(button_remove);
+        
 
         button_remove.addEventListener("click", function (e) {
         ul.removeChild(lista_criada);
