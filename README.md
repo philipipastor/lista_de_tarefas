@@ -29,19 +29,22 @@ Seleciona os elementos principais: campo de texto, botão e lista (`ul`).
 
 ---
 
-### 2. Função `cria_lista()`
+### 2. Função `cria_lista(texto)`
 
 Cria um item da lista (`<li>`) com o texto digitado no input e o adiciona ao `<ul>`:
 
 ```js
-function cria_lista() {
+function cria_lista(texto){
     const lista_criada = document.createElement("li");
     ul.appendChild(lista_criada);
-    lista_criada.textContent = input.value;
+    lista_criada.textContent = texto;
     input.value = "";
     input.focus();
+
+    lista_criada.innerText += " "
+
     return lista_criada;
-}
+    }
 ```
 
 ---
@@ -69,17 +72,16 @@ function btn_remove(lista_criada) {
 Chama as funções anteriores para adicionar a tarefa completa:
 
 ```js
-function cria_tarefa(e) {
-    if (!input.value) return;
-    const lista = cria_lista();
+function cria_tarefa(texto = input.value){
+    const lista = cria_lista(texto);
     btn_remove(lista);
     salvar_tarefa();
-}
+    }
 ```
 
 ---
 
-### 5. Função `salvar_tarefa()`
+### 6. Função `salvar_tarefa()`
 
 Percorre todos os itens da lista, remove a palavra “Apagar” e salva os textos no `localStorage` em formato JSON:
 
@@ -100,17 +102,44 @@ function salvar_tarefa() {
 
 ---
 
-### 6. Função `adicionando_tarefas_salvas()`
+### 7. Função `adicionando_tarefas_salvas()`
 
-Recupera as tarefas armazenadas no `localStorage` (ainda incompleta nesta versão).
+Recupera as tarefas armazenadas no `localStorage`:
 
+```js
+function adicionando_tarefas_salvas(){
+    const tarefas = localStorage.getItem("tarefas");
+    const lista_de_tarefa = JSON.parse(tarefas);
+    console.log(lista_de_tarefa)
+
+    for (let tarefa of lista_de_tarefa){
+        cria_tarefa(tarefa)
+    }
+
+}
+adicionando_tarefas_salvas();
+```
 ---
 
-### 7. Eventos
+### 8. Eventos
 
 * **Clique no botão:** adiciona a tarefa
-* **Tecla Enter:** adiciona a tarefa também
+```js
+button.addEventListener("click", function(){
+    if(!input.value) return;
+    cria_tarefa();
+});
+```
 
+* **Tecla Enter:** adiciona a tarefa também
+```js
+input.addEventListener("keypress", function(e){
+    if(e.key === "Enter"){
+        cria_tarefa();
+    }
+});
+
+```
 ---
 
 ## 🧠 Aprendizados
@@ -127,7 +156,6 @@ Este projeto exercita:
 
 ## 🔧 Melhorias Futuras
 
-* Carregar e exibir as tarefas salvas automaticamente (função `adicionando_tarefas_salvas`)
 * Adicionar estilo com CSS (ex: botão apagar com espaçamento)
 * Criar um feedback visual (mensagem ou animação ao apagar/adicionar tarefa)
 * Permitir marcar tarefas como concluídas
