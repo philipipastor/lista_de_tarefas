@@ -1,33 +1,43 @@
-function meu_escopo() {
-
+function meu_escopo(){
     const input = document.querySelector(".input");
     const button = document.querySelector(".botao");
     const ul = document.querySelector(".lista");
 
-
-    button.addEventListener("click", function (e) {
-        e.preventDefault();
-
-        if(!input.value) return;
-
-
+    function cria_lista(){
         const lista_criada = document.createElement("li");
         ul.appendChild(lista_criada);
-        lista_criada.textContent += input.value;
+        lista_criada.textContent = input.value;
         input.value = "";
+        return lista_criada;
+    }
 
+    function btn_remove(lista_criada){
         const button_remove = document.createElement("button");
         button_remove.innerText = "Apagar"
         lista_criada.appendChild(button_remove);
 
         button_remove.addEventListener("click", function (e) {
-            e.preventDefault();
-            ul.removeChild(lista_criada);
+        ul.removeChild(lista_criada);
         })
-    })
+    }
+
+    function cria_tarefa(e){
+        if (!input.value) return;
+        const lista = cria_lista()
+        btn_remove(lista)
+    }
+
+    function key_enter(e){
+        if (e.key === "Enter"){
+            cria_tarefa(e)
+        }
+    }
+
+    button.addEventListener("click", cria_tarefa);
+    input.addEventListener("keypress", key_enter);
 }
 
-meu_escopo()
+meu_escopo();
 
 
 
