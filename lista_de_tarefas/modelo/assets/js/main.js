@@ -16,10 +16,11 @@ function meu_escopo(){
     }
 
     function btn_remove(lista_criada){
-        //lista_criada.innerText += " "
+        
         const button_remove = document.createElement("button");
         button_remove.innerText = "Apagar"
         lista_criada.appendChild(button_remove);
+        salvar_tarefa()
         
 
         button_remove.addEventListener("click", function (e) {
@@ -29,8 +30,9 @@ function meu_escopo(){
 
     function cria_tarefa(e){
         if (!input.value) return;
-        const lista = cria_lista()
-        btn_remove(lista)
+        const lista = cria_lista();
+        btn_remove(lista);
+        salvar_tarefa();
     }
 
     function key_enter(e){
@@ -41,9 +43,31 @@ function meu_escopo(){
 
     button.addEventListener("click", cria_tarefa);
     input.addEventListener("keypress", key_enter);
-}
 
+
+    function salvar_tarefa(){
+        const tarefas_li = ul.querySelectorAll("li");
+        const lista_de_tarefa = [];
+
+        for (tarefa of tarefas_li) {
+            let tarefa_texto = tarefa.innerText;
+            tarefa_texto = tarefa_texto.replace("Apagar", "").trim();
+            lista_de_tarefa.push(tarefa_texto)
+        }
+
+        const tarefaJSON = JSON.stringify(lista_de_tarefa);
+        localStorage.setItem("tarefas", tarefaJSON);
+    }
+
+        function adicionando_tarefas_salvas(){
+            const tarefas = localStorage.getItem("tarefas");
+            const lista_de_tarefa = JSON.parse(tarefas);
+
+        }
+        adicionando_tarefas_salvas();
+}
 meu_escopo();
+
 
 
 
